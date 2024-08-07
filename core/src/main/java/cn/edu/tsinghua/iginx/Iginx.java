@@ -49,7 +49,6 @@ public class Iginx {
       new Thread(MonitorManager.getInstance()).start();
     }
     Iginx iginx = new Iginx();
-    System.out.println("test");
     iginx.startServer();
   }
 
