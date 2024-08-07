@@ -16,4 +16,3 @@ jobs:
         with:
             metadata-matrix: '["zookeeper"]'
             os-matrix: '["macos-13"]'
-            db-matrix: '["FileSystem"]'
