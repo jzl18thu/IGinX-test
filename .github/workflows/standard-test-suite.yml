@@ -1,0 +1,19 @@
+name: Standard Test Suite
+
+on:
+    pull_request: # when a PR is opened or reopened
+        types: [opened, reopened]
+        branches:
+            - main
+
+concurrency:
+    group: "${{ github.workflow }}-${{ github.ref }}"
+    cancel-in-progress: true
+
+jobs:
+    db-ce:
+        uses: ./.github/workflows/DB-CE.yml
+        with:
+            metadata-matrix: '["zookeeper"]'
+            os-matrix: '["macos-13"]'
+            db-matrix: '["FileSystem"]'
