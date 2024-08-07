@@ -17,6 +17,8 @@
  */
 package cn.edu.tsinghua.iginx.iotdb.tools;
 
+import static cn.edu.tsinghua.iginx.engine.shared.operator.filter.Op.isLikeOp;
+
 import cn.edu.tsinghua.iginx.engine.shared.operator.filter.*;
 import cn.edu.tsinghua.iginx.thrift.DataType;
 
@@ -78,17 +80,11 @@ public class FilterTransformer {
             ? "'" + filter.getValue().getBinaryVAsString() + "'"
             : filter.getValue().getValue().toString();
 
-    if (Op.isLikeOp(filter.getOp())) {
+    if (isLikeOp(filter.getOp())) {
       if (!value.endsWith("$'")) {
         value = value.substring(0, value.length() - 1) + "$'";
       }
       return filter.getPath() + " regexp " + value;
-    } else if (Op.isNotLikeOp(filter.getOp())) {
-      if (!value.endsWith("$'")) {
-        value = value.substring(0, value.length() - 1) + "$'";
-      }
-      // TODO: 0.12版本iotdb还未支持not regexp
-      return "!(" + filter.getPath() + " regexp " + value + ")";
     }
 
     return filter.getPath() + " " + Op.op2StrWithoutAndOr(filter.getOp()) + " " + value;
